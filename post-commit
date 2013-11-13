@@ -7,7 +7,9 @@
 
 ;; Printing arguments back out.  Send in strings like this:
 ;; ./scriptname \"ABC\" def ghk
-(princ (format "args: %s\n" command-line-args-left))
+;;
+;; - We don't use args for this particular script
+; (princ (format "args: %s\n" command-line-args-left))
 
 (princ (format "log: %s\n" (shell-command-to-string "git log -1")))
 
