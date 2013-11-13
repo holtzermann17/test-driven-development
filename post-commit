@@ -73,8 +73,8 @@
   
 
   (princ (format "sha1: %s\n"  sha1))
-  (princ (format "added lines:\n %s\n"  (get-added-lines-per-commit sha1)))
-  (princ (format "modified files:\n %s\n"  (get-modified-files-per-commit sha1))))
+  (princ (format "added lines:\n%s\n"  (get-added-lines-per-commit sha1)))
+  (princ (format "modified files:\n%s\n"  (get-modified-files-per-commit sha1))))
 
 ; (condition-case nil (check-parens) (error (kill-emacs 1)))
 
