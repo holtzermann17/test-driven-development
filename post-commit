@@ -13,7 +13,7 @@
 
 (defun get-diff-per-commit (sha1)
   (with-temp-buffer
-    (shell-command (concat "git show " sha1))
+    (insert (shell-command-to-string (concat "git show " sha1)))
     ;; for now, we will just look at the text that is added, not
     ;; text that is deleted
     (keep-lines "^+" (point-min) (point-max))
