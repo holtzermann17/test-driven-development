@@ -11,7 +11,14 @@
 ;; - We don't use args for this particular script
 ; (princ (format "args: %s\n" command-line-args-left))
 
-(princ (format "log: %s\n" (shell-command-to-string "git log -1")))
+(let* ((orig-commit-message (shell-command-to-string "git log -1"))
+       (sha1 (looking-at (with-temp-buffer (insert orig-commit-message)
+                                           (goto-char (point-min))
+                                           (looking-at "commit \\(.*\\)")
+                                           (match-string 1))))
+  
+
+(princ (format "sha1: %s\n" ) sha1)
 
 ; (condition-case nil (check-parens) (error (kill-emacs 1)))
 
