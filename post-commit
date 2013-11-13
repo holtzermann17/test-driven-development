@@ -19,7 +19,8 @@
     (keep-lines "^+" (point-min) (point-max))
     (goto-char (point-min))
     (while (re-search-forward "^+" nil t)
-      (replace-match "" nil nil))))
+      (replace-match "" nil nil))
+    (buffer-substring-no-properties (point-min) (point-max))))
 
 (let* ((orig-commit-message (shell-command-to-string "git log -1"))
        (sha1 (with-temp-buffer (insert orig-commit-message)
