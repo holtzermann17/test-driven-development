@@ -15,10 +15,10 @@
        (sha1 (looking-at (with-temp-buffer (insert orig-commit-message)
                                            (goto-char (point-min))
                                            (looking-at "commit \\(.*\\)")
-                                           (match-string 1))))
+                                           (match-string 1)))))
   
 
-(princ (format "sha1: %s\n" ) sha1)
+(princ (format "sha1: %s\n" ) sha1))
 
 ; (condition-case nil (check-parens) (error (kill-emacs 1)))
 
