@@ -31,7 +31,7 @@
     ;; text that is deleted
     (keep-lines "^\\+\\+\\+" (point-min) (point-max))
     (goto-char (point-min))
-    (while (re-search-forward "^\\+\\+\\+" nil t)
+    (while (re-search-forward "^\\+\\+\\+ b/" nil t)
       (replace-match "" nil nil))
     (buffer-substring-no-properties (point-min) (point-max))))
 
