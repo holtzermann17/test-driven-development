@@ -12,6 +12,7 @@
 ; (princ (format "args: %s\n" command-line-args-left))
 
 (defun get-added-lines-per-commit (sha1)
+  "Given a commit SHA1, return the lines that have been changed."
   (with-temp-buffer
     (insert (shell-command-to-string (concat "git show " sha1)))
     ;; for now, we will just look at the text that is added, not
@@ -19,6 +20,18 @@
     (keep-lines "^+[^+][^+]" (point-min) (point-max))
     (goto-char (point-min))
     (while (re-search-forward "^+" nil t)
+      (replace-match "" nil nil))
+    (buffer-substring-no-properties (point-min) (point-max))))
+
+(defun get-modified-files-per-commit (sha1)
+  "Given a commit SHA1, return the names of the modified files."
+  (with-temp-buffer
+    (insert (shell-command-to-string (concat "git show " sha1)))
+    ;; for now, we will just look at the text that is added, not
+    ;; text that is deleted
+    (keep-lines "^+++" (point-min) (point-max))
+    (goto-char (point-min))
+    (while (re-search-forward "^+++" nil t)
       (replace-match "" nil nil))
     (buffer-substring-no-properties (point-min) (point-max))))
 
@@ -30,7 +43,8 @@
   
 
   (princ (format "sha1: %s\n"  sha1))
-  (princ (format "added lines:\n %s\n"  (get-added-lines-per-commit sha1))))
+  (princ (format "added lines:\n %s\n"  (get-added-lines-per-commit sha1)))
+  (princ (format "modified files:\n %s\n"  (get-modified-files-per-commit sha1))))
 
 ; (condition-case nil (check-parens) (error (kill-emacs 1)))
 
