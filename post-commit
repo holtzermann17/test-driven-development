@@ -14,7 +14,7 @@
 (let* ((orig-commit-message (shell-command-to-string "git log -1"))
        (sha1 (looking-at (with-temp-buffer (insert orig-commit-message)
                                            (goto-char (point-min))
-                                           (looking-at "commit \\(.*\\)")
+                                           (search-forward-regexp "commit \\(.*\\)")
                                            (match-string 1)))))
   
 
