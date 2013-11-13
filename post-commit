@@ -12,10 +12,10 @@
 ; (princ (format "args: %s\n" command-line-args-left))
 
 (let* ((orig-commit-message (shell-command-to-string "git log -1"))
-       (sha1 (looking-at (with-temp-buffer (insert orig-commit-message)
+       (sha1 (with-temp-buffer (insert orig-commit-message)
                                            (goto-char (point-min))
                                            (search-forward-regexp "commit \\(.*\\)")
-                                           (match-string 1)))))
+                                           (match-string 1))))
   
 
 (princ (format "sha1: %s\n"  sha1)))
