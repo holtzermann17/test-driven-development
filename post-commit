@@ -1,6 +1,32 @@
 #!/usr/local/bin/emacs --script      # -*- Emacs-Lisp -*
 
-;; This is the old way
+;;; Documentation:
+
+;; This file demonstrates some simple post commit tricks
+;; with Emacs.  It can print out simple changed lines in a
+;; buffer.  We could feed these lines into the
+;; test-driven-development.el file, or use this data from
+;; inside that file to get a more interesting idea of the
+;; "increment" to analyse.
+;;
+;; We might want to get the magit package into the loop to
+;; more seamlessly commit things without leaving Emacs, or
+;; without getting away from the usual development
+;; workflow in Emacs.
+;;
+;; The main problem at the moment is that
+;; test-driven-development.el uses ert in an interactive
+;; manner.  We could also load all of the functions there
+;; and run ert in a non-interactive manner, resulting in
+;; more detailed output from this script.
+
+;; That might be the easiest thing to do.  Note that we
+;; ought to be able to doctor the commit message with
+;; another command.
+
+;;; Notes:
+
+;; This is the old way to call emacs scripts
 ; :;exec emacs -batch -l "$0" -f main -- "$@"            
 ;(defun main ()
 ;  (princ (format "%d\n" (+ 1 2))))
@@ -10,6 +36,8 @@
 ;;
 ;; - We don't use args for this particular script
 ; (princ (format "args: %s\n" command-line-args-left))
+
+;;; Function definitions:
 
 (defun get-added-lines-per-commit (sha1)
   "Given a commit SHA1, return the lines that have been changed."
@@ -34,6 +62,8 @@
     (while (re-search-forward "^\\+\\+\\+ b/" nil t)
       (replace-match "" nil nil))
     (buffer-substring-no-properties (point-min) (point-max))))
+
+;;; Body:
 
 (let* ((orig-commit-message (shell-command-to-string "git log -1"))
        (sha1 (with-temp-buffer (insert orig-commit-message)
