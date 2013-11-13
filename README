@@ -1,11 +1,13 @@
 Quickstart:
 
 In order to play around with post commit hooks, please
-link the "post-commit" file in this directory to
-./.git/hooks/post-commit via the following command, run in
-the current directory:
+make sure the "post-commit" file in this directory is
+executable, and link it to ./.git/hooks/post-commit with
+the following command, run in the current top level
+directory:
 
   ln -s ../../post-commit ./.git/hooks/post-commit
+
 
 Verbose:
 
