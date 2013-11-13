@@ -1,8 +1,17 @@
+Quickstart:
+
+In order to play around with post commit hooks, please
+link the "post-commit" file in this directory to
+./.git/hooks/post-commit via the following command, run in
+the current directory:
+
+  ln -s ../../post-commit ./.git/hooks/post-commit
+
+Verbose:
+
+As above, and...
+
 This is a git repository to play around with test driven
-development.
-
-I'm trying to do some stuff with git hooks.
-
-But I'm not that familiar with them so I'm testing as I go!
-
-I think I'm getting the hang of it though.
+development.  I'm trying to do some stuff with git hooks.
+But I'm not that familiar with them so I'm testing as I
+go!  I think I'm getting the hang of it though.
