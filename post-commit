@@ -11,14 +11,30 @@
 ;; - We don't use args for this particular script
 ; (princ (format "args: %s\n" command-line-args-left))
 
+(defun get-diff-per-commit (sha1)
+  (dolist (elt history)
+    (with-temp-buffer
+      (shell-command (concat "git show " sha1))
+      ;; for now, we will just look at the text that is added, not
+      ;; text that is deleted
+      (keep-lines "^+" (point-min) (point-max))
+      (goto-char (point-min))
+      (while (re-search-forward "^+" nil t)
+        (replace-match "" nil nil))
+      (setq record (cons (cons (buffer-string) 
+                               (cdr elt))
+                         record))))
+  (reverse record))
+
 (let* ((orig-commit-message (shell-command-to-string "git log -1"))
        (sha1 (with-temp-buffer (insert orig-commit-message)
                                            (goto-char (point-min))
-                                           (search-forward-regexp "commit \\(.*\\)")
+                                           (looking-at "commit \\(.*\\)")
                                            (match-string 1))))
   
 
-(princ (format "sha1: %s\n"  sha1)))
+  (princ (format "sha1: %s\n"  sha1))
+  (princ (format "added lines:\n %s\n"  (get-diff-per-commit sha1))))
 
 ; (condition-case nil (check-parens) (error (kill-emacs 1)))
 
