@@ -18,7 +18,7 @@
                                            (match-string 1)))))
   
 
-(princ (format "sha1: %s\n" ) sha1))
+(princ (format "sha1: %s\n"  sha1)))
 
 ; (condition-case nil (check-parens) (error (kill-emacs 1)))
 
