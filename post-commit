@@ -11,7 +11,7 @@
 ;; - We don't use args for this particular script
 ; (princ (format "args: %s\n" command-line-args-left))
 
-(defun get-diff-per-commit (sha1)
+(defun get-added-lines-per-commit (sha1)
   (with-temp-buffer
     (insert (shell-command-to-string (concat "git show " sha1)))
     ;; for now, we will just look at the text that is added, not
@@ -30,7 +30,7 @@
   
 
   (princ (format "sha1: %s\n"  sha1))
-  (princ (format "added lines:\n %s\n"  (get-diff-per-commit sha1))))
+  (princ (format "added lines:\n %s\n"  (get-added-lines-per-commit sha1))))
 
 ; (condition-case nil (check-parens) (error (kill-emacs 1)))
 
