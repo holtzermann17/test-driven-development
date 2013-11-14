@@ -100,7 +100,7 @@
     (setenv "NOGITPOSTCOMMIT" "true")
     (let* ((in (concat "git commit --amend -m \"" (with-temp-buffer (insert orig-commit-message)
                                                                     (goto-char (point-min))
-                                                                    (flush-lines "^ "))
+                                                                    (flush-lines "^[^ ]"))
                        "\n\n Notice that this is a new, augmented commit message.\""))
            (out (shell-command-to-string in)))
       (message (concat "command: " in))
