@@ -84,7 +84,7 @@
   
   (set-buffer (get-buffer "*added-lines-buffer*"))
   (insert added-lines)
-  (write-file "/Users/jac2349/test-driven-development/have-a-look")
+  ;(write-file "/Users/jac2349/test-driven-development/have-a-look")
   (setq FACE-buffer-as-increment working-buffer)
   ;; It would be nice to move these things into the tests
   (ert-run-tests-batch-and-exit "^FACE"))
