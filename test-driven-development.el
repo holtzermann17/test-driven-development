@@ -90,6 +90,9 @@
 ;; line typically isn't a "semantically" meaningful
 ;; change.
 ;;
+;;  [Making our diffs more semantic is an obvious thing to
+;;  fix.]
+;;
 ;; Let's assume that we can get ahold of the semantically
 ;; meaningful changes with a little bit of code that scans
 ;; a git commit and then reads the corresponding file.
@@ -171,6 +174,51 @@
 ;; from the type theoretic issues - we want to have a
 ;; "score card" for each increment.
 
+;;; Documentation: Comments on first working prototype:
+
+;; I now have a prototype that can run tests
+;; non-interactively on the incremental changes in a git
+;; repository, using the git post-commit hook.  As I
+;; mentioned just above, it would be nice to have a
+;; somewhat better reporting mechanism, and to then alter
+;; the commit messages by sticking relevant "score card"
+;; information into them.  This is eminently doable.
+;;
+;; For now the "interesting things we can notice" are
+;; defined in a rather simplistic way, since we only
+;; notice a few regexps that describe the creation of
+;; defuns and similar.  However, this is already a usable
+;; start, i.e. I can easily make some tests that notice
+;; things of interest in hcode (e.g. defthm instead of
+;; deftest; I'll have to take a look at my old notes to
+;; see what's there).
+;;
+;; The thing I'm thinking is: actually, just creating more
+;; and more definitions -- at least in this manner -- is
+;; not particularly creative.  On one level it might be
+;; "more creative" to do a lot of them (as with a big
+;; translation effort) and ultimately when very many
+;; definitions are known, it would be creative to add
+;; something truly new.  However, one might expect a very
+;; long non-creative interlude in the middle, where we
+;; just transcribe things from lots and lots of known
+;; sources.  Clearly there would be *some* elements of
+;; creativity in this process, however: having to do in
+;; this case with inventive forms of transcription or
+;; translation, with interesting speed-ups and so forth.
+;;
+;; But the basic point is that creativity is only really
+;; defined relative to an "edge".  Once we've done that
+;; thing before, or a lot of things like it, then another
+;; iteration of the same is not particularly creative.
+;;
+;; Continuing this idea, do we want to count "new"
+;; appearances of `defn' or `defthm' as truly new
+;; concepts, if they have simply been transcribed from
+;; somewhere else?  (If so, we'll have to do a little more
+;; integration work to describe how one test triggers
+;; recognition for another test.)
+
 ;;; Code:
 
 (require 'ert)
@@ -203,7 +251,6 @@ Example: this concept is interesting, but it needs:
 - a relationship to another concept in the domain
 - a conjecture
 etc."
-
   ;; jac - Note that even more complex version would allow a map to another manifold.
   ;(should (= (+ 1 2) 4))
   )
@@ -279,19 +326,34 @@ of a method for doing other proofs."
 ;; tests for the number of defuns and number of defvars
 
 (ert-deftest FACE-count-tests ()
-  (save-excursion (set-buffer (get-buffer FACE-buffer-as-increment))
-                  (let ((number-of-tests (count-matches "^(ert-deftest" (point-min) (point-max))))
-                    (should (equal number-of-tests 0)))))
+  (save-excursion 
+    (set-buffer (get-buffer FACE-buffer-as-increment))
+    (let ((number-of-tests (count-matches "^(ert-deftest" (point-min) (point-max))))
+      (should (equal number-of-tests 0)))))
 
 (ert-deftest FACE-count-defuns ()
-  (save-excursion (set-buffer (get-buffer FACE-buffer-as-increment))
-                  (let ((number-of-defuns (count-matches "^(defun" (point-min) (point-max))))
-                    (should (equal number-of-defuns 0)))))
+  (save-excursion
+    (set-buffer (get-buffer FACE-buffer-as-increment))
+    (let ((number-of-defuns (count-matches "^(defun" (point-min) (point-max))))
+      (should (equal number-of-defuns 0)))))
 
 (ert-deftest FACE-count-defvars ()
-  (save-excursion (set-buffer (get-buffer FACE-buffer-as-increment))
-                  (let ((number-of-variables (count-matches "^(defvar" (point-min) (point-max))))
-                    (should (equal number-of-variables 0)))))
+  (save-excursion
+    (set-buffer (get-buffer FACE-buffer-as-increment))
+    (let ((number-of-variables (count-matches "^(defvar" (point-min) (point-max))))
+      (should (equal number-of-variables 0)))))
+
+(ert-deftest FACE-count-defns ()
+  (save-excursion
+    (set-buffer (get-buffer FACE-buffer-as-increment))
+    (let ((number-of-variables (count-matches "^(defn" (point-min) (point-max))))
+      (should (equal number-of-variables 0)))))
+
+(ert-deftest FACE-count-defthm ()
+  (save-excursion
+    (set-buffer (get-buffer FACE-buffer-as-increment))
+    (let ((number-of-variables (count-matches "^(defn" (point-min) (point-max))))
+      (should (equal number-of-variables 0)))))
 
 ;;; Pass in an increment:
 
