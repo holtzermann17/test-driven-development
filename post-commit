@@ -99,7 +99,7 @@
     ;; Attempt at getting some new information into the commit message
     (setenv "NOGITPOSTCOMMIT" "true")
     (shell-command-to-string (concat "git commit --amend -m "   orig-commit-message  "\n\nThis is a new, augmented commit message."))
-    (shell-command-to-string "echo 'This is running'")
+    (message "This is running at least")
     (setenv "NOGITPOSTCOMMIT" nil)
 
     ))
