@@ -1,4 +1,4 @@
-#!/usr/local/bin/emacs --script      # -*- Emacs-Lisp -*
+#!/usr/local/bin/emacs --script      # -*- Emacs-Lisp -*-
 
 ;;; Dependencies:
 
