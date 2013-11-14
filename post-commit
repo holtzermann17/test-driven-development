@@ -2,7 +2,7 @@
 
 ;;; Dependencies:
 
-(load "./test-driven-development.el")
+(load "/Users/jac2349/test-driven-development/test-driven-development.el")
 
 ;;; Documentation:
 
