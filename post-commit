@@ -96,17 +96,18 @@
     ;; what's printed.
     (ert-run-tests-batch "^FACE")
 
-    ;; Attempt at getting some new information into the commit message
+    ;; Getting some new information into the actual commit message
     (setenv "NOGITPOSTCOMMIT" "true")
     (let* ((in (concat "git commit --amend -m \"" (with-temp-buffer (insert orig-commit-message)
                                                                     (goto-char (point-min))
                                                                     (keep-lines "^ ")
+                                                                    (goto-char (point-min))
+                                                                    (while (re-search-forward "^   " nil t)
+                                                                      (replace-match "" nil nil))
                                                                     (buffer-substring-no-properties (point-min) (point-max)))
                        "\n\n Notice that this is a new, augmented commit message.\""))
            (out (shell-command-to-string in))))
-    
     (setenv "NOGITPOSTCOMMIT" nil)
-
     ))
 
 ; (condition-case nil (check-parens) (error (kill-emacs 1)))
