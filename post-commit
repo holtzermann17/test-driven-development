@@ -1,5 +1,9 @@
 #!/usr/local/bin/emacs --script      # -*- Emacs-Lisp -*
 
+;;; Dependencies:
+
+(load "./test-driven-development.el")
+
 ;;; Documentation:
 
 ;; This file demonstrates some simple post commit tricks
@@ -69,12 +73,20 @@
        (sha1 (with-temp-buffer (insert orig-commit-message)
                                            (goto-char (point-min))
                                            (looking-at "commit \\(.*\\)")
-                                           (match-string 1))))
+                                           (match-string 1)))
+       (added-lines (get-added-lines-per-commit sha1))
+       (modified-files (get-modified-files-per-commit sha1))
+       (working-buffer (get-buffer-create "*added-lines-buffer*")))
   
-
   (princ (format "sha1: %s\n"  sha1))
-  (princ (format "added lines:\n%s\n"  (get-added-lines-per-commit sha1)))
-  (princ (format "modified files:\n%s\n"  (get-modified-files-per-commit sha1))))
+  (princ (format "added lines:\n%s\n" added-lines))
+  (princ (format "modified files:\n%s\n" modified-files))
+  
+  (set-buffer (get-buffer "*added-lines-buffer*"))
+  (insert added-lines)
+  (setq FACE-buffer-as-increment buffer)
+  ;; It would be nice to move these things into the tests
+  (ert-run-tests-batch-and-exit "^FACE"))
 
 ; (condition-case nil (check-parens) (error (kill-emacs 1)))
 
