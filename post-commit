@@ -98,8 +98,9 @@
 
     ;; Attempt at getting some new information into the commit message
     (setenv "NOGITPOSTCOMMIT" "true")
-    (shell-command-to-string (concat "git commit --amend -m "   orig-commit-message  "\n\nThis is a new, augmented commit message."))
-    (message "This is running at least")
+    (let ((out (shell-command-to-string (concat "git commit --amend -m "   orig-commit-message  "\n\nThis is a new, augmented commit message."))))
+      (message (concat "message: " out)))
+    
     (setenv "NOGITPOSTCOMMIT" nil)
 
     ))
