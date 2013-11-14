@@ -69,31 +69,37 @@
 
 ;;; Body:
 
-(let* ((orig-commit-message (shell-command-to-string "git log -1"))
-       (sha1 (with-temp-buffer (insert orig-commit-message)
-                                           (goto-char (point-min))
-                                           (looking-at "commit \\(.*\\)")
-                                           (match-string 1)))
-       (added-lines (get-added-lines-per-commit sha1))
-       (modified-files (get-modified-files-per-commit sha1))
-       (working-buffer (get-buffer-create "*added-lines-buffer*")))
-  
-  (princ (format "sha1: %s\n"  sha1))
-  (princ (format "added lines:\n%s\n" added-lines))
-  (princ (format "modified files:\n%s\n" modified-files))
-  
-  (set-buffer (get-buffer "*added-lines-buffer*"))
-  (insert added-lines)
-  ;(write-file "/Users/jac2349/test-driven-development/have-a-look")
-  (setq FACE-buffer-as-increment working-buffer)
-  ;; Could use `ert-run-tests-batch' instead, but that
-  ;; also prints directly to the terminal - if we want to
-  ;; modify what is printed there, we might need a
-  ;; lower-lying function (?).  Well, the code uses
-  ;; `message' so maybe we can figure out a way to access
-  ;; the content, but be a little more selective about
-  ;; what's printed.
-  (ert-run-tests-batch-and-exit "^FACE"))
+(unless (getenv "NOGITPOSTCOMMIT")
+  (let* ((orig-commit-message (shell-command-to-string "git log -1"))
+         (sha1 (with-temp-buffer (insert orig-commit-message)
+                                 (goto-char (point-min))
+                                 (looking-at "commit \\(.*\\)")
+                                 (match-string 1)))
+         (added-lines (get-added-lines-per-commit sha1))
+         (modified-files (get-modified-files-per-commit sha1))
+         (working-buffer (get-buffer-create "*added-lines-buffer*")))
+    
+    (princ (format "sha1: %s\n"  sha1))
+    (princ (format "added lines:\n%s\n" added-lines))
+    (princ (format "modified files:\n%s\n" modified-files))
+    
+    (set-buffer (get-buffer "*added-lines-buffer*"))
+    (insert added-lines)
+
+    (setq FACE-buffer-as-increment working-buffer)
+    ;; Could use `ert-run-tests-batch' instead, but that
+    ;; also prints directly to the terminal - if we want to
+    ;; modify what is printed there, we might need a
+    ;; lower-lying function (?).  Well, the code uses
+    ;; `message' so maybe we can figure out a way to access
+    ;; the content, but be a little more selective about
+    ;; what's printed.
+    (ert-run-tests-batch-and-exit "^FACE")
+    ;;
+    (setenv "NOGITPOSTCOMMIT" 1)
+    (shell-command-to-string "git commit -m " (concat orig-commit-message "\n\n This is a new, augmented commit message.")
+    (setenv "NOGITPOSTCOMMIT" nil)
+    )))
 
 ; (condition-case nil (check-parens) (error (kill-emacs 1)))
 
