@@ -28,19 +28,6 @@
 ;; ought to be able to doctor the commit message with
 ;; another command.
 
-;;; Notes:
-
-;; This is the old way to call emacs scripts
-; :;exec emacs -batch -l "$0" -f main -- "$@"            
-; (defun example ()
-;  (princ (format "%d\n" (+ 1 2))))
-
-;; Printing arguments back out.  Send in strings like this:
-;; ./scriptname \"ABC\" def ghk
-;;
-;; - We don't use args for this particular script
-; (princ (format "args: %s\n" command-line-args-left))
-
 ;;; Function definitions:
 
 (defun get-added-lines-per-commit (sha1)
@@ -87,16 +74,14 @@
     (insert added-lines)
 
     (setq FACE-buffer-as-increment working-buffer)
-    ;; Could use `ert-run-tests-batch' instead, but that
-    ;; also prints directly to the terminal - if we want to
-    ;; modify what is printed there, we might need a
-    ;; lower-lying function (?).  Well, the code uses
-    ;; `message' so maybe we can figure out a way to access
-    ;; the content, but be a little more selective about
-    ;; what's printed.
+    ;; Note, this function prints its output using
+    ;; `message' so maybe we can figure out a way to
+    ;; access the content, but be a little more selective
+    ;; about what's printed.
     (ert-run-tests-batch "^FACE")
 
     ;; Getting some new information into the actual commit message
+    ;; jac Nov 14, 2013 - clearly we should put something "real" in rather than just generic filler
     (setenv "NOGITPOSTCOMMIT" "true")
     (let* ((in (concat "git commit --amend -m \"" (with-temp-buffer (insert orig-commit-message)
                                                                     (goto-char (point-min))
@@ -109,28 +94,3 @@
            (out (shell-command-to-string in))))
     (setenv "NOGITPOSTCOMMIT" nil)
     ))
-
-; (condition-case nil (check-parens) (error (kill-emacs 1)))
-
-;; Sending different error codes
-; (kill-emacs 113)
-;; Read the output of that with:  echo $?
-
-
-;; prepare-commit-msg
-;;        This hook is invoked by git commit right after preparing the default log message, and before the editor is started.
-
-;;        It takes one to three parameters. The first is the name of the file that contains the commit log message. The second
-;;        is the source of the commit message, and can be: message (if a -m or -F option was given); template (if a -t option
-;;        was given or the configuration option commit.template is set); merge (if the commit is a merge or a .git/MERGE_MSG
-;;        file exists); squash (if a .git/SQUASH_MSG file exists); or commit, followed by a commit SHA1 (if a -c, -C or
-;;        --amend option was given).
-
-;;        If the exit status is non-zero, git commit will abort.
-
-;;        The purpose of the hook is to edit the message file in place, and it is not suppressed by the --no-verify option. A
-;;        non-zero exit means a failure of the hook and aborts the commit. It should not be used as replacement for pre-commit
-;;        hook.
-
-
-;;        The sample prepare-commit-msg hook that comes with git comments out the Conflicts: part of a merge's commit message.
