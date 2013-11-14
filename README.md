@@ -102,8 +102,8 @@ with a tally.  All of this git stuff is a fairly
 specific implementation detail.
 
 We could start with something simpler, like identifying
-the number of `defun' and `defvar' usages in a given
-file.  It's not entirely clear that the `ert-deftest'
+the number of `defun` and `defvar` usages in a given
+file.  It's not entirely clear that the `ert-deftest`
 mechanism will be the best way to go, rather than using
 some other ad hoc code scanning and reporting
 mechanism, but we can try!
@@ -119,7 +119,7 @@ good, because it produces explanations.
 
 They also say:
 
->   ERT does not have built-in support for mocks or stubs.  The package `el-mock' (see `http://www.emacswiki.org/emacs/el-mock.el') offers mocks for Emacs Lisp and can be used in conjunction with ERT.
+>   ERT does not have built-in support for mocks or stubs.  The package `el-mock` (see [http://www.emacswiki.org/emacs/el-mock.el](http://www.emacswiki.org/emacs/el-mock.el)) offers mocks for Emacs Lisp and can be used in conjunction with ERT.
 
 Potentially worth checking this out when we get to the
 point of implementing a proper type theoretic schema.
@@ -128,7 +128,7 @@ point of implementing a proper type theoretic schema.
 
 The code in the ert-x package includes a macro for
 running tests on the current buffer, called
-`ert-with-buffer-renamed'.  In theory, we could use
+`ert-with-buffer-renamed`.  In theory, we could use
 this to test how many matches for a given regexp are
 present in the buffer, say.  The one issue here is
 figuring out how to get ERT to report something
