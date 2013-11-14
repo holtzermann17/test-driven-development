@@ -98,7 +98,7 @@
 
     ;; Attempt at getting some new information into the commit message
     (setenv "NOGITPOSTCOMMIT" "true")
-    (let* ((in (concat "git commit --amend -m "   orig-commit-message  "\n\nThis is a new, augmented commit message."))
+    (let* ((in (concat "git commit --amend -m \"" orig-commit-message  "\n\n This is a new, augmented commit message.\""))
            (out (shell-command-to-string in)))
       (message (concat "command: " in))
       (message (concat "message: " out)))
