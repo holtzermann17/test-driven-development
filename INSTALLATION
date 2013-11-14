@@ -8,12 +8,4 @@ directory:
 
   ln -s ../../post-commit ./.git/hooks/post-commit
 
-
-Verbose:
-
-As above, and...
-
-This is a git repository to play around with test driven
-development.  I'm trying to do some stuff with git hooks.
-But I'm not that familiar with them so I'm testing as I
-go!  I think I'm getting the hang of it though.
+More details coming soon.
