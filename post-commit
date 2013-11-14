@@ -94,12 +94,13 @@
     ;; `message' so maybe we can figure out a way to access
     ;; the content, but be a little more selective about
     ;; what's printed.
-    (ert-run-tests-batch-and-exit "^FACE")
+    (ert-run-tests-batch "^FACE")
     ;;
     (setenv "NOGITPOSTCOMMIT" 1)
-    (shell-command-to-string "git commit --amend -m " (concat  "This is a new, augmented commit message."))
+    (shell-command-to-string "git commit --amend -m " (concat  orig-commit-message  "\n\nThis is a new, augmented commit message."))
     (setenv "NOGITPOSTCOMMIT" nil)
-    )))
+
+    ))
 
 ; (condition-case nil (check-parens) (error (kill-emacs 1)))
 
