@@ -97,7 +97,7 @@
     (ert-run-tests-batch "^FACE")
 
     ;; Attempt at getting some new information into the commit message
-    (setenv "NOGITPOSTCOMMIT" 1)
+    (setenv "NOGITPOSTCOMMIT" "true")
     (shell-command-to-string (concat "git commit --amend -m "   orig-commit-message  "\n\nThis is a new, augmented commit message."))
     (setenv "NOGITPOSTCOMMIT" nil)
 
