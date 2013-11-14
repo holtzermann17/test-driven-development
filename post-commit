@@ -32,8 +32,8 @@
 
 ;; This is the old way to call emacs scripts
 ; :;exec emacs -batch -l "$0" -f main -- "$@"            
-(defun example ()
-  (princ (format "%d\n" (+ 1 2))))
+; (defun example ()
+;  (princ (format "%d\n" (+ 1 2))))
 
 ;; Printing arguments back out.  Send in strings like this:
 ;; ./scriptname \"ABC\" def ghk
@@ -86,7 +86,13 @@
   (insert added-lines)
   ;(write-file "/Users/jac2349/test-driven-development/have-a-look")
   (setq FACE-buffer-as-increment working-buffer)
-  ;; It would be nice to move these things into the tests
+  ;; Could use `ert-run-tests-batch' instead, but that
+  ;; also prints directly to the terminal - if we want to
+  ;; modify what is printed there, we might need a
+  ;; lower-lying function (?).  Well, the code uses
+  ;; `message' so maybe we can figure out a way to access
+  ;; the content, but be a little more selective about
+  ;; what's printed.
   (ert-run-tests-batch-and-exit "^FACE"))
 
 ; (condition-case nil (check-parens) (error (kill-emacs 1)))

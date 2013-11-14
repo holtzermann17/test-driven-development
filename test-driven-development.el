@@ -355,30 +355,6 @@ of a method for doing other proofs."
     (let ((number-of-variables (count-matches "^(defn" (point-min) (point-max))))
       (should (equal number-of-variables 0)))))
 
-;;; Pass in an increment:
-
-;; This is trickier, because the increment has to be sent
-;; as an argument.  I guess I can create a fixture that
-;; allows the user to interactively supply the name of a
-;; buffer to test, for example.
-;;
-;; OK, this code all works, but I'm commenting out for now
-;; b/c the interaction would be annoying when I'm testing
-
-;(defun FACE-select-buffer-to-count-fixture (body)
-;  (let ((buffer (read-buffer "Buffer to scan: ")))
-;    (unwind-protect (progn 
-;                     (save-excursion (set-buffer (get-buffer buffer))
-;                                      (funcall body)))
-;      )))
-
-;; A test that makes use of the fixture described above
-;(ert-deftest FACE-select-buffer-and-count-test ()
-;  (FACE-select-buffer-to-count-fixture
-;   (lambda ()
-;     (let ((number-of-defuns (count-matches "^(defun" (point-min) (point-max))))
-;      (should (equal number-of-defuns 0))))))
-
 ;;; Run a battery of tests on a given file:
 
 ;; All I really need is a function similar to
@@ -391,6 +367,7 @@ of a method for doing other proofs."
 (defvar FACE-buffer-as-increment nil)
 
 (defun FACE-select-buffer-and-run-tests (buffer)
+  "Provides is an interactive way to run tests on contents of BUFFER."
   (interactive "b")
   (setq FACE-buffer-as-increment buffer)
   (ert-run-tests-interactively "^FACE"))
