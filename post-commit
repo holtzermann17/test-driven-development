@@ -2,7 +2,7 @@
 
 ;;; Dependencies:
 
-(load "/Users/jac2349/test-driven-development/test-driven-development.el")
+(load "/Users/joe/test-driven-development/test-driven-development.el")
 
 ;;; Documentation:
 
@@ -64,6 +64,7 @@
                                  (match-string 1)))
          (added-lines (get-added-lines-per-commit sha1))
          (modified-files (get-modified-files-per-commit sha1))
+         (files-arity (if (eq modified-files 1) "file" "files"))
          (working-buffer (get-buffer-create "*added-lines-buffer*")))
     
     (princ (format "sha1: %s\n"  sha1))
@@ -90,7 +91,7 @@
                                                                     (while (re-search-forward "^   " nil t)
                                                                       (replace-match "" nil nil))
                                                                     (buffer-substring-no-properties (point-min) (point-max)))
-                       "\n\n Notice that this is a new, augmented commit message.\""))
+                       "\n\n You modified " modified-files files-arity " and added " added-lines " lines."))
            (out (shell-command-to-string in))))
     (setenv "NOGITPOSTCOMMIT" nil)
     ))
