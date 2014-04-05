@@ -84,14 +84,18 @@
     ;; Getting some new information into the actual commit message
     ;; jac Nov 14, 2013 - clearly we should put something "real" in rather than just generic filler
     (setenv "NOGITPOSTCOMMIT" "true")
-    (let* ((in (concat "git commit --amend -m \"" (with-temp-buffer (insert orig-commit-message)
-                                                                    (goto-char (point-min))
-                                                                    (keep-lines "^ ")
-                                                                    (goto-char (point-min))
-                                                                    (while (re-search-forward "^   " nil t)
-                                                                      (replace-match "" nil nil))
-                                                                    (buffer-substring-no-properties (point-min) (point-max)))
-                       "\n\n You modified " modified-files files-arity " and added " added-lines " lines."))
+    (let* ((in (concat "git commit --amend -m \"" 
+                       ;; modify the original commit message
+                       (with-temp-buffer (insert orig-commit-message)
+                                         (goto-char (point-min))
+                                         (keep-lines "^ ")
+                                         (goto-char (point-min))
+                                         (while (re-search-forward "^   " nil t)
+                                           (replace-match "" nil nil))
+                                         (buffer-substring-no-properties
+                                          (point-min) (point-max)))
+                       "\n\n You modified " modified-files " " files-arity
+                       " and added " added-lines " lines."))
            (out (shell-command-to-string in))))
     (setenv "NOGITPOSTCOMMIT" nil)
     ))
