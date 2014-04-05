@@ -6,6 +6,6 @@ executable, and link it to ./.git/hooks/post-commit with
 the following command, run in the current top level
 directory:
 
-  ln -s ../../post-commit ./.git/hooks/post-commit
+  ln -s ./post-commit ./.git/hooks/post-commit
 
 More details coming soon.
